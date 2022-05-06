@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import firebase from 'firebase/app';
 import { useSigninCheck } from 'reactfire';
 import { useAuthState, useSignInWithGoogle } from 'react-firebase-hooks/auth';
-import { getAuth, GoogleAuthProvider, signOut } from 'firebase/auth';
+import { getAuth, GoogleAuthProvider, signOut, onAuthStateChanged } from 'firebase/auth';
 import {
     Container,
     Button,
@@ -75,9 +75,9 @@ const GoogleButton = (props:buttonProps) =>{
         props.onClick();
 
         if (user) {
-            navigate('/dashboard')
         }
-
+        navigate('/dashboard')
+        
     }
     const singUsOut = async () => {
         await signOut(auth)

@@ -21,6 +21,18 @@ const columns: GridColDef[] = [
     editable: true,
   },
   {
+    field: 'name',
+    headerName: 'name',
+    width: 150,
+    editable: true,
+  },
+  {
+    field: 'description',
+    headerName: 'description',
+    width: 200,
+    editable: true,
+  },
+  {
     field: 'year',
     headerName: 'year',
     width: 150,
@@ -39,8 +51,8 @@ const columns: GridColDef[] = [
     editable: true,
   },
   {
-    field: 'owner',
-    headerName: 'owner',
+    field: 'owners',
+    headerName: 'owners',
     width: 110,
     editable: true,
   },
@@ -53,8 +65,14 @@ const columns: GridColDef[] = [
   {
     field: 'spec_version',
     headerName: 'spec_version',
-    description: 'This column has a value getter and is not sortable.',
-    sortable: false,
+    editable: true,
+    width: 160,
+
+  },
+  {
+    field: 'series',
+    headerName: 'series',
+    editable: true,
     width: 160,
 
   },

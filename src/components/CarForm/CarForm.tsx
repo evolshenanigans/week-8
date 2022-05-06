@@ -8,7 +8,7 @@ import { chooseName,
     chooseEngine,
     chooseMaxSpeed,
     chooseYear,
-    chooseOwner,
+    chooseOwners,
     chooseSeries,
     chooseSpec,
     chooseWeight } from '../../redux/slices/rootSlice';
@@ -26,11 +26,11 @@ interface CarState{
     model: string;
     description: string;
     engine: string;
-    maxspeed: string;
+    max_speed: string;
     year: string;
-    owner: string;
+    owners: string;
     series: string;
-    spec: string;
+    spec_version: string;
     weight:string;
 }
 
@@ -49,6 +49,7 @@ export const CarForm = (props: CarFormProps) =>{
         console.log(props.id)
 
         if ( props.id!){
+            console.log(data)
             await serverCalls.update(props.id!, data)
             console.log(`Updated: ${data.name}`)
             window.location.reload();
@@ -58,13 +59,13 @@ export const CarForm = (props: CarFormProps) =>{
             dispatch(chooseModel(data.model))
             dispatch(chooseDescription(data.description))
             dispatch(chooseEngine(data.engine))
-            dispatch(chooseMaxSpeed(data.maxspeed))
+            dispatch(chooseMaxSpeed(data.max_speed))
             dispatch(chooseYear(data.year))
-            dispatch(chooseOwner(data.owner))
+            dispatch(chooseOwners(data.owners))
             dispatch(chooseSeries(data.series))
-            dispatch(chooseSpec(data.spec))
+            dispatch(chooseSpec(data.spec_version))
             dispatch(chooseWeight(data.weight))
-
+            console.log(store.getState())
             await serverCalls.create(store.getState())
             window.location.reload();
             event.target.reset();
@@ -91,24 +92,24 @@ export const CarForm = (props: CarFormProps) =>{
                     <Input {...register('engine')} name="engine" placeholder="engine" />
                 </div>
                 <div>
-                    <label htmlFor="maxspeed">Car Max Speed</label>
-                    <Input {...register('maxspeed')} name="maxspeed" placeholder="max" />
+                    <label htmlFor="max_speed">Car Max Speed</label>
+                    <Input {...register('max_speed')} name="max_speed" placeholder="max_speed" />
                 </div>
                 <div>
                     <label htmlFor="year">Car year</label>
                     <Input {...register('year')} name="year" placeholder="year" />
                 </div>
                 <div>
-                    <label htmlFor="owner">Car Owner</label>
-                    <Input {...register('owner')} name="owner" placeholder="owner" />
+                    <label htmlFor="owners">Car owners</label>
+                    <Input {...register('owners')} name="owners" placeholder="owners" />
                 </div>
                 <div>
                     <label htmlFor="series">Series</label>
                     <Input {...register('series')} name="series" placeholder="series" />
                 </div>
                 <div>
-                    <label htmlFor="spec">Car Spec</label>
-                    <Input {...register('spec')} name="spec" placeholder="spec" />
+                    <label htmlFor="spec_version">Car Spec</label>
+                    <Input {...register('spec_version')} name="spec_version" placeholder="spec_version" />
                 </div>
                 <div>
                     <label htmlFor="weight">Car Weight</label>
