@@ -1,10 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import{ styled } from '@mui/system';
-import { Button } from '@mui/material';
+import { Button, CircularProgress } from '@mui/material';
 import DriftImage from '../../assets/images/initialddrift.jpg'
 import { ClassNames } from '@emotion/react';
 import MyLogo from '../../assets/images/projectd2.jpg';
+import { getAuth } from 'firebase/auth'
+import { useSignInWithGoogle } from 'react-firebase-hooks/auth';
+
 
 const MyComponent = () => {
     return <img src={MyLogo} />
@@ -68,6 +71,19 @@ const MainText = styled('div')({
     color: 'white'
 })
 
+const SignInText =() =>{
+    const auth = getAuth();
+    const [SignInWithGoogle, user, loading, error] =useSignInWithGoogle(auth)
+    if (loading){
+        return <CircularProgress />
+    } if (user) {
+        return <NavA to='/signin'>Sign Out</NavA>
+      } else {
+        return <NavA to='/signin'>Sign In</NavA>
+      }
+}
+
+
 export const Home = (props: Props) => {
     return (
         <Root>
@@ -85,7 +101,7 @@ export const Home = (props: Props) => {
                         <NavA to ='/dashboard'>Dashboard</NavA>
                     </li>
                     <li>
-                        <NavA to ='/signin'>Sign In</NavA>
+                        <SignInText/>
                     </li>
                 </LogoNavigation>
             </NavbarContainer>

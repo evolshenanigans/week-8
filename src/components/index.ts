@@ -5,3 +5,5 @@ export * from './Dashboard'
 export * from './SignIn'
 
 export * from './DataTable'
+
+export * from './CarForm';

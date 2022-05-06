@@ -6,6 +6,11 @@ import { Home, Dashboard, SignIn } from './components';
 import './styles.css';
 import {theme } from './Theme/themes';
 import { ThemeProvider } from '@mui/material/styles';
+import { store } from './redux/store'
+import { Provider } from 'react-redux';
+import {FirebaseAppProvider } from 'reactfire';
+import 'firebase/auth';
+import {firebaseConfig } from './firebaseConfig'
 
 
 const root = ReactDOM.createRoot(
@@ -15,6 +20,8 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
+    <FirebaseAppProvider firebaseConfig={firebaseConfig}>
+    <Provider store={store}>
     <ThemeProvider theme = {theme}>
     <Router>
       <Routes>
@@ -24,6 +31,8 @@ root.render(
       </Routes>
     </Router>
     </ThemeProvider>
+    </Provider>
+    </FirebaseAppProvider>
   </React.StrictMode>,
 
 );

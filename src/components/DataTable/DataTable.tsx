@@ -1,66 +1,113 @@
-import React from 'react';
-import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
-import { serverCalls} from '../../api'
-
+import React, {useState} from 'react';
+import { DataGrid, GridColDef, GridSelectionModel } from '@mui/x-data-grid';
+import { serverCalls} from '../../api';
+import { useGetData } from '../../custom-hooks';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle
+} from'@mui/material';
+import { CarForm } from '../../components';
 
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'ID', width: 90 },
   {
-    field: 'firstName',
-    headerName: 'First name',
+    field: 'model',
+    headerName: 'model',
     width: 150,
     editable: true,
   },
   {
-    field: 'lastName',
-    headerName: 'Last name',
+    field: 'year',
+    headerName: 'year',
     width: 150,
     editable: true,
   },
   {
-    field: 'age',
-    headerName: 'Age',
-    type: 'number',
+    field: 'engine',
+    headerName: 'engine',
     width: 110,
     editable: true,
   },
   {
-    field: 'fullName',
-    headerName: 'Full name',
+    field: 'max_speed',
+    headerName: 'max_speed',
+    width: 110,
+    editable: true,
+  },
+  {
+    field: 'owner',
+    headerName: 'owner',
+    width: 110,
+    editable: true,
+  },
+  {
+    field: 'weight',
+    headerName: 'weight',
+    width: 110,
+    editable: true,
+  },
+  {
+    field: 'spec_version',
+    headerName: 'spec_version',
     description: 'This column has a value getter and is not sortable.',
     sortable: false,
     width: 160,
-    valueGetter: (params: GridValueGetterParams) =>
-      `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+
   },
 ];
 
-const rows = [
-  { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-  { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-  { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-  { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-  { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-  { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-  { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-  { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-  { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-];
-
-
+interface gridData{
+  data:{
+    id?:string;
+  }
+}
 export const DataTable = () => {
-    const carData = serverCalls.get();
+  let { carData, getData } = useGetData();
+  let [open, setOpen] = useState(false);
+  let [gridData, setData] = useState<GridSelectionModel>([])
+
+  let handleOpen = () => {
+    setOpen(true);
+  }
+  let handleClose = () => {
+    setOpen(false);
+  }
+  let deleteData = async () => {
+    await serverCalls.delete(`${gridData[0]}`)
+    getData();
+  }
+
+  console.log(gridData)
     return (
       <div style={{ height: 400, width: '100%' }}>
           <h2>Project D Inventory</h2>
         <DataGrid
-          rows={rows}
+          rows={carData}
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[5]}
           checkboxSelection
           disableSelectionOnClick
+          onSelectionModelChange={newSelectionModel => {setData(newSelectionModel)}}
+          {...carData}
         />
+        <Button onClick={handleOpen} color="primary">Update</Button>
+        <Button onClick={deleteData} color='warning'>Delete</Button>
+
+        <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title ">
+          <DialogTitle id='form-dialog-title'>Update a car</DialogTitle>
+          <DialogContent>
+            <DialogContentText> Updating Car ID: {gridData[0]}</DialogContentText>
+            <CarForm id={`${gridData[0]}`}/>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Cancel</Button>
+          </DialogActions>
+        </Dialog>
       </div>
     );
   }
